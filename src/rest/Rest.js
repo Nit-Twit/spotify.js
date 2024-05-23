@@ -15,11 +15,18 @@ class REST {
             },
             body: JSON.stringify(options.body)
         });
+        if (!response.ok && response.status === 401) {
+            const success = await this.refresh();
+            if (success) {
+                return await this.request(options);
+            }
+        }
         if (options.method === 'GET') {
             return await response.json();
         }
-        else
+        else {
             return true;
+        }
     }
     constructor(token, clientId, clientSecret) {
         this.token = token.access_token;
@@ -40,16 +47,24 @@ class REST {
         return this.request({ method: 'DELETE', route });
     }
     async refresh() {
-        const response = await fetch("https://accounts.spotify.com/api/token", {
+        const url = "https://accounts.spotify.com/api/token";
+        const auth = Buffer.from(this.clientId + ':' + this.clientSecret).toString('base64');
+        const payload = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + btoa(this.clientId + ':' + this.clientSecret),
+                Authorization: 'Basic ' + auth,
             },
-            body: `grant_type=refresh_token&refresh_token=${this.refreshToken}`
-        });
-        const data = await response.json();
-        this.token = data.access_token;
+            body: new URLSearchParams({
+                grant_type: 'refresh_token',
+                refresh_token: this.refreshToken,
+                client_id: this.clientId
+            }),
+        };
+        const reponse = await fetch(url, payload);
+        const res = await reponse.json();
+        this.token = res.access_token;
+        return true;
     }
 }
 exports.REST = REST;

@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
-const Rest_1 = require("../rest/Rest");
+const rest_1 = require("../rest/rest");
 class Player {
     rest;
     constructor(token, clientId, clientSecret) {
-        this.rest = new Rest_1.REST(token, clientId, clientSecret);
+        this.rest = new rest_1.REST(token, clientId, clientSecret);
     }
     async playSong(songId) {
         return await this.rest.put('/me/player/play', {

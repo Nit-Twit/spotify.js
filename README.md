@@ -8,7 +8,12 @@ A lightweight library for interacting with the Spotify API
 ```js
 const {SpotifyClient} = require("spotifydotjs")
 
-const client = new SpotifyClient(<ACCESS TOKEN>, <REFRESH TOKEN>, <CLIENT ID>, <CLIENT SECRET>)
+const client = new SpotifyClient({
+    accessToken: "ACCESS TOKEN",
+    refreshToken: "REFRESH TOKEN",
+    cliendId: "CLIENT ID",
+    clientSecret: "CLIENT SECRET"
+})
 
 client.me().then(console.log).catch(console.error)
 ```

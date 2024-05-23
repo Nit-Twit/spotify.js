@@ -2,13 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SpotifyClient = void 0;
 const player_1 = require("../player/player");
-const Rest_1 = require("../rest/Rest");
+const rest_1 = require("../rest/rest");
 class SpotifyClient {
     rest;
     player;
-    constructor(access_token, refresh_token, clientId, clientSecret) {
-        this.rest = new Rest_1.REST({ access_token, refresh_token }, clientId, clientSecret);
-        this.player = new player_1.Player({ access_token, refresh_token }, clientId, clientSecret);
+    constructor(data) {
+        const access_token = data.accessToken;
+        const refresh_token = data.refreshToken;
+        this.rest = new rest_1.REST({ access_token, refresh_token }, data.clientId, data.clientSecret);
+        this.player = new player_1.Player({ access_token, refresh_token }, data.clientId, data.clientSecret);
+        // Send a request to the API to get the user's information (this will refresh the access token if an expired token is provided)
+        this.me();
     }
     async me() {
         return await this.rest.get('/me');
