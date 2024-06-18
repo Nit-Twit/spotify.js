@@ -19,6 +19,12 @@ export class SpotifyClient {
         return await this.rest.get('/me');
     }
 
+    public async likeSong(id: string) {
+        return await this.rest.put('/me/tracks', {
+            'ids': [id]
+        })
+    }
+
     public async getUserPlaylists() {
         return await this.rest.get('/me/playlists');
     }

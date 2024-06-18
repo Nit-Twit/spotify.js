@@ -1,6 +1,6 @@
 {
   "name": "spotifydotjs",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A lightweight library for interacting with Spotify's API",
   "main": "src/index.js",
   "scripts": {
